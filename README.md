@@ -1,5 +1,65 @@
-## Next.js App Router Course - Starter
+# Next.js Dashboard
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+このアプリは Next.js の公式チュートリアル(Learn Next.js)を使った学習用プロジェクト。
+各セクションで学習した内容は PR にまとめている。
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+## 概要
+
+学習した内容は下記の通り
+
+- スタイリング: Next.js でアプリケーションをスタイリングする様々な方法
+- 最適化: 画像、リンク、フォントを最適化する方法
+- ルーティング: ファイルシステムルーティングを使用して、ネストされたレイアウトとページを作成する方法
+- データ取得: Vercel 上に Postgres データベースをセットアップする方法、およびデータ取得とストリーミングに関するベストプラクティス
+- 検索とページネーション：URL 検索パラメータを使用して検索とページネーションを実装する方法
+- データの変更： React Server Actions を使用してデータを変更し、Next.js キャッシュを再検証する方法
+- エラー処理：404 一般的なエラーと見つからないエラーの処理方法
+- フォーム検証とアクセシビリティ：サーバーサイドでのフォーム検証の方法と、アクセシビリティを向上させるためのヒント
+- 認証 NextAuth.js：プロキシを使用してアプリケーションに認証を追加する方法
+- メタデータ：メタデータを追加し、ソーシャルシェアリングに対応できるようアプリケーションを準備する方法
+
+## 環境
+
+|                        | バージョン     |
+| ---------------------- | -------------- |
+| Next.js                | 16.0.10        |
+| React                  | 19             |
+| Tailwind CSS           | 3.4.17         |
+| パッケージマネージャー | pnpm           |
+| DB                     | Neon(Postgres) |
+
+教材は Tailwind v3 前提。現行は v4 で設定の書き方が異なる（JS 設定 → CSS の `@theme`）。
+教材の記述と挙動が異なる箇所は各 PR に記録している。
+
+## セットアップ
+
+```bash
+pnpm install
+cp .env.example .env
+```
+
+`.env` に Neon の接続文字列を設定する。
+
+- Vercel ダッシュボード → Storage → Neon → `.env.local` タブ → Show secret
+- `DATABASE_URL` の値を `POSTGRES_URL` に貼る（**変数名が異なる**）
+- `AUTH_SECRET` は `openssl rand -base64 32` で生成
+
+`vercel env pull` は Sensitive フラグが有効な変数の値を取得できないため、手動でコピーする。
+
+```bash
+pnpm dev
+```
+
+初回は `http://localhost:3000/seed` にアクセスしてシードを実行。
+
+## ログイン
+
+```
+Email: user@nextmail.com
+Password: 123456
+```
+
+## デプロイ時の注意
+
+`.env` は `.gitignore` で除外されているため、Vercel 側にも環境変数の設定が必要。
+未設定だと `POSTGRES_URL` が空になり、postgres.js が `127.0.0.1:5432` にフォールバックしてビルドが失敗する。
