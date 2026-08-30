@@ -3,12 +3,12 @@ import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import type { User } from '@/app/lib/definitions';
-import bcrypot from 'bcrypt';
+import bcypt from 'bcrypt';
 import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-async function getuser(email: string): Promise<User | undefined> {
+async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User[]>`SELECT * FROM users WHERE email=${email}`;
     return user[0];
@@ -29,9 +29,9 @@ export const { auth, signIn, signOut } = NextAuth({
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
-          const user = await getuser(email);
+          const user = await getUser(email);
           if (!user) return null;
-          const passwordMatch = await bcrypot.compare(password, user.password);
+          const passwordMatch = await bcypt.compare(password, user.password);
 
           if (passwordMatch) return user;
         }
